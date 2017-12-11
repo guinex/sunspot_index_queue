@@ -85,8 +85,10 @@ module Sunspot
           end
           priority = priority.to_i
           if ids.is_a?(Array)
+            # check if records are already enqueued
+            ids = implementation.new_record_ids(klass, ids) unless delete
             ids.each do |id|
-              implementation.add(klass, id, delete, priority)
+              implementation.add(klass, id, delete, priority, true)
             end
           else
             implementation.add(klass, ids, delete, priority)
